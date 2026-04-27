@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LegacyLink v2.0: EcoCompute Architect</title>
     <style>
-        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap');
 
         :root {
             --bg-color: #0a0a0a;
@@ -75,6 +75,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
 
         /* Header & Typography */
@@ -178,6 +179,34 @@
             color: var(--text-muted);
             padding-top: 1rem;
             border-top: 1px solid #333;
+        }
+
+        /* Welcome Placeholder */
+        .welcome-placeholder {
+            text-align: center;
+            margin-top: 25vh;
+            color: var(--text-muted);
+            transition: opacity 0.5s ease;
+            max-width: 500px;
+        }
+
+        .welcome-placeholder h2 {
+            color: #cccccc;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .welcome-placeholder p {
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .welcome-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-shadow: var(--glow);
         }
 
         /* Main Content - Blueprint */
@@ -463,6 +492,9 @@
             .system-profile {
                 text-align: left;
             }
+            .welcome-placeholder {
+                margin-top: 10vh;
+            }
         }
     </style>
 </head>
@@ -515,6 +547,12 @@
     </aside>
 
     <main>
+        <div id="welcome-placeholder" class="welcome-placeholder">
+            <div class="welcome-icon">⚡</div>
+            <h2>Awaiting Hardware Specifications</h2>
+            <p>Select your legacy components from the sidebar and click Generate to retrieve your precise Linux revival blueprint.</p>
+        </div>
+
         <div id="blueprint-container">
             <div class="card">
                 <div class="blueprint-header">
@@ -701,6 +739,7 @@
         // DOM Elements
         const btnGenerate = document.getElementById('generate-btn');
         const container = document.getElementById('blueprint-container');
+        const welcomePlaceholder = document.getElementById('welcome-placeholder');
         const typewriterEl = document.getElementById('typewriter');
         let typingTimeout;
 
@@ -716,6 +755,11 @@
             if (!conf) {
                 alert("Configuration not found.");
                 return;
+            }
+
+            // Hide the welcome placeholder forever once clicked
+            if (welcomePlaceholder) {
+                welcomePlaceholder.style.display = 'none';
             }
 
             // Hide to restart animation
