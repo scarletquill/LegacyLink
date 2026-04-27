@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide: 32-bit | 4GB+ | Home Server</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        aside {
+            width: 280px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        .toc {
+            margin-top: 3rem;
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+            text-shadow: var(--glow);
+        }
+
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 4rem 3rem;
+            max-width: 1000px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            color: #ccc;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-code);
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .config-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .code-block:hover {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), var(--glow);
+            border-color: var(--primary);
+        }
+
+        .code-header {
+            background-color: #111;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: #00ff88;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .troubleshooting-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid #ffaa00;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .troubleshooting-card h4 {
+            color: #ffaa00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            text-shadow: var(--glow);
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <a href="../index.html" class="back-link">&larr; Back to LegacyLink</a>
+            
+            <ul class="toc">
+                <li><a href="#rationale">1. Why This Stack</a></li>
+                <li><a href="#prerequisites">2. Prerequisites</a></li>
+                <li><a href="#step1">3. Download & Flash</a></li>
+                <li><a href="#step2">4. Installation</a></li>
+                <li><a href="#step3">5. Optimization Layer</a></li>
+                <li><a href="#step4">6. Application Stack</a></li>
+                <li><a href="#step5">7. Verification</a></li>
+                <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="config-badge">32-bit CPU | 4GB+ RAM | Home Server</div>
+        <h1>Devuan + Docker-ce</h1>
+        <p class="hero-desc">Capitalize on the 4GB RAM sweet spot by turning legacy 32-bit hardware into a modular, containerized application host protected by Nginx and fail2ban.</p>
+
+        <section id="rationale">
+            <h2>Why This Stack</h2>
+            <ul>
+                <li><strong>4GB Docker Sweet Spot:</strong> 4GB provides sufficient overhead to run multiple microservices via Docker concurrently on 32-bit hardware without risking Out-Of-Memory (OOM) kernel panics.</li>
+                <li><strong>cgroups v1 Requirement:</strong> Older x86 kernels and 32-bit Docker versions require cgroups v1 for resource management. Devuan makes it easy to specify this at the bootloader level.</li>
+                <li><strong>XFS Filesystem:</strong> Crucial for Docker's <code>overlay2</code> storage driver. XFS handles layered file systems significantly better than ext4, especially when spinning up and tearing down containers.</li>
+                <li><strong>Nginx Reverse Proxy:</strong> A lightweight gateway that safely exposes multiple internal Docker containers to the outside world over single standard ports (80/443).</li>
+                <li><strong>fail2ban:</strong> An automated intrusion prevention framework that bans malicious IPs, an essential security layer for any exposed server infrastructure.</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>A 32-bit (x86) legacy PC with 4GB (or more) of RAM.</li>
+                <li>A blank USB Flash Drive (4GB or larger).</li>
+                <li>A secondary computer for flashing the ISO image.</li>
+                <li>A hardwired Ethernet connection (Wi-Fi is discouraged for container hosts).</li>
+            </ul>
+        </section>
+
+        <section id="step1">
+            <h2>Step 1: Download & Flash</h2>
+            <p>Download the <strong>Devuan Chimaera 32-bit (i386) Netinstall</strong> ISO. We use the netinstall to maintain a headless, server-optimized base system devoid of GUI bloat.</p>
+            <p><a href="[https://devuan.org/os/releases](https://devuan.org/os/releases)" target="_blank">Download Devuan i386 Netinstall ISO &rarr;</a></p>
+            
+            <h3>Flashing via Linux Terminal</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dd if=devuan_chimaera_4.0.0_i386_netinstall.iso of=/dev/sdX bs=4M status=progress</div>
+            </div>
+            <p><em>(Replace <code>/dev/sdX</code> with your actual USB drive identifier. Do not append partition numbers).</em></p>
+        </section>
+
+        <section id="step2">
+            <h2>Step 2: Installation Walkthrough</h2>
+            <ol>
+                <li>Boot the target machine from the USB drive and choose <strong>Install</strong>.</li>
+                <li>Proceed through the initial prompts to set up your network, hostname, and root password.</li>
+                <li><strong>Partitioning:</strong> Choose "Manual". Format the primary partition using the <strong>XFS</strong> filesystem, which is highly recommended for Docker.</li>
+                <li><strong>Init System:</strong> Explicitly select <strong>runit</strong> when prompted.</li>
+                <li><strong>Software Selection:</strong> Uncheck the desktop environment. Keep "SSH server" and "standard system utilities" selected.</li>
+                <li>Finish the installation, install the GRUB bootloader, and reboot.</li>
+            </ol>
+        </section>
+
+        <section id="step3">
+            <h2>Step 3: Post-Install Optimization</h2>
+            <p>Log in to your server. We must configure the kernel to allow Docker to properly isolate memory and swap accounts.</p>
+
+            <h3>1. Configure cgroups v1</h3>
+            <p>Docker requires specific kernel parameters on 32-bit architectures. Edit the GRUB configuration file:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo nano /etc/default/grub</div>
+            </div>
+            <p>Find the line starting with <code>GRUB_CMDLINE_LINUX</code> and modify it to look exactly like this:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>text</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"</div>
+            </div>
+            <p>Save the file and update the bootloader:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo update-grub
+sudo reboot</div>
+            </div>
+            <p><em>(The server must be rebooted for these kernel parameters to take effect.)</em></p>
+
+            <h3>2. XFS Formatting (Secondary Drive)</h3>
+            <p>If you have a dedicated drive for Docker containers (e.g., `/dev/sdb`), format it to XFS now and mount it to `/var/lib/docker`.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo mkfs.xfs -f /dev/sdb1</div>
+            </div>
+        </section>
+
+        <section id="step4">
+            <h2>Step 4: Install the App Stack</h2>
+            <p>Fetch the Docker engine, the Nginx proxy, and the fail2ban security utility.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo apt update
+sudo apt install docker-ce nginx fail2ban</div>
+            </div>
+
+            <h3>Configure Nginx Reverse Proxy</h3>
+            <p>Create a proxy configuration to route incoming traffic to a container (assuming a container is running on port 8080).</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo nano /etc/nginx/sites-available/default</div>
+            </div>
+            <p>Add the proxy block inside the server configuration:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>nginx</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">location /app {
+    proxy_pass [http://127.0.0.1:8080](http://127.0.0.1:8080);
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}</div>
+            </div>
+
+            <h3>Configure fail2ban</h3>
+            <p>Create a local jail configuration to protect SSH and Nginx.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+sudo service fail2ban restart</div>
+            </div>
+        </section>
+
+        <section id="step5">
+            <h2>Step 5: Verification</h2>
+            <p>Run these commands to ensure the entire stack is operational.</p>
+            
+            <h3>Test Docker Engine</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo docker run hello-world
+sudo docker ps -a</div>
+            </div>
+            <p><em>The first command downloads and runs a test container. The second verifies the daemon is tracking it.</em></p>
+
+            <h3>Verify Nginx Configuration</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo nginx -t</div>
+            </div>
+            <p><em>Output should say "syntax is ok" and "test is successful".</em></p>
+
+            <h3>Check fail2ban Status</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo fail2ban-client status</div>
+            </div>
+            <p><em>Output will display the active jails (e.g., sshd) currently protecting the system.</em></p>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="troubleshooting-card">
+                <h4>Docker daemon fails to start</h4>
+                <p>If Docker refuses to start, it is highly likely the cgroups memory configuration was not applied properly. Double-check your <code>/etc/default/grub</code> file for typos, ensure you ran <code>update-grub</code>, and confirm the machine was completely rebooted.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>"exec format error" when running containers</h4>
+                <p>You are using a 32-bit (i386) host. You cannot run modern 64-bit (amd64) Docker containers. Always check Docker Hub for the <code>linux/386</code> architecture tag before attempting to pull and run an image.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>Nginx returns 502 Bad Gateway</h4>
+                <p>A 502 error means Nginx is working, but the Docker container it's trying to talk to is either down or listening on a different port. Verify your container is actively running using <code>docker ps</code> and check that the mapped ports align with your <code>proxy_pass</code> IP/port.</p>
+            </div>
+        </section>
+
+        <footer>
+            LegacyLink v2.0 | SDG 12.5 | Revive. Reuse. Reduce.<br>
+            <a href="../index.html">Return to Master Blueprint</a>
+        </footer>
+    </main>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeContent = btn.parentElement.nextElementSibling.textContent;
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.color = 'var(--primary)';
+                    btn.style.borderColor = 'var(--primary)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = 'var(--text-muted)';
+                        btn.style.borderColor = '#444';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

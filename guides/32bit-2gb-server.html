@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide: 32-bit | 2GB | Home Server</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        aside {
+            width: 280px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        .toc {
+            margin-top: 3rem;
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+            text-shadow: var(--glow);
+        }
+
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 4rem 3rem;
+            max-width: 1000px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            color: #ccc;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-code);
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .config-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .code-block:hover {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), var(--glow);
+            border-color: var(--primary);
+        }
+
+        .code-header {
+            background-color: #111;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: #00ff88;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .troubleshooting-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid #ffaa00;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .troubleshooting-card h4 {
+            color: #ffaa00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            text-shadow: var(--glow);
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <a href="../index.html" class="back-link">&larr; Back to LegacyLink</a>
+            
+            <ul class="toc">
+                <li><a href="#rationale">1. Why This Stack</a></li>
+                <li><a href="#prerequisites">2. Prerequisites</a></li>
+                <li><a href="#step1">3. Download & Flash</a></li>
+                <li><a href="#step2">4. Installation</a></li>
+                <li><a href="#step3">5. Optimization Layer</a></li>
+                <li><a href="#step4">6. Application Stack</a></li>
+                <li><a href="#step5">7. Verification</a></li>
+                <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="config-badge">32-bit CPU | 2GB RAM | Home Server</div>
+        <h1>Devuan Chimaera</h1>
+        <p class="hero-desc">Deploy a stable, systemd-free server environment using the lightweight runit init system and a classic LEMP stack, optimized for low overhead.</p>
+
+        <section id="rationale">
+            <h2>Why This Stack</h2>
+            <ul>
+                <li><strong>Systemd-Free (runit):</strong> Devuan replaces the monolithic systemd with <code>runit</code>, which is drastically lighter, more predictable, and consumes far fewer background resources on a 2GB machine.</li>
+                <li><strong>Hardened Kernel:</strong> Implementing a hardened kernel profile reduces the attack surface on an always-on home server exposed to your local network.</li>
+                <li><strong>No Swap Policy:</strong> Older HDDs suffer from mechanical wear during swap thrashing. With 2GB of RAM, we disable swap entirely, forcing the kernel to manage active memory aggressively without disk latency.</li>
+                <li><strong>LEMP Stack (Nginx + MariaDB + PHP-FPM):</strong> The absolute standard for high-performance, low-memory web hosting. Nginx handles static requests asynchronously, while PHP-FPM scales worker processes dynamically.</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>A 32-bit (x86) legacy PC with 2GB of RAM.</li>
+                <li>A blank USB Flash Drive (4GB or larger).</li>
+                <li>A secondary computer for flashing the ISO image.</li>
+                <li>A wired Ethernet connection (essential for server stability).</li>
+            </ul>
+        </section>
+
+        <section id="step1">
+            <h2>Step 1: Download & Flash</h2>
+            <p>Download the <strong>Devuan Chimaera (i386 Netinstall)</strong> ISO. The netinstall ensures you only download the core packages required, avoiding desktop bloat.</p>
+            <p><a href="[https://devuan.org/os/releases](https://devuan.org/os/releases)" target="_blank">Download Devuan i386 Netinstall ISO &rarr;</a></p>
+            
+            <h3>Flashing via Linux Terminal</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dd if=devuan_chimaera_4.0.0_i386_netinstall.iso of=/dev/sdX bs=4M status=progress</div>
+            </div>
+            <p><em>(Replace <code>/dev/sdX</code> with your actual USB drive identifier. Do not append partition numbers).</em></p>
+        </section>
+
+        <section id="step2">
+            <h2>Step 2: Installation Walkthrough</h2>
+            <ol>
+                <li>Boot the server machine from the USB drive and select <strong>Install</strong>.</li>
+                <li>Follow the Debian-style prompts to configure your language, timezone, and network.</li>
+                <li>Set a strong root password and create an administrative user account.</li>
+                <li><strong>Partitioning:</strong> Choose "Manual" or "Guided - use entire disk". <strong>CRITICAL: Do not create a swap partition.</strong> Format the primary partition as <code>ext4</code>.</li>
+                <li><strong>Init System:</strong> When prompted to select your init system, explicitly choose <strong>runit</strong>.</li>
+                <li><strong>Software Selection:</strong> Uncheck "Debian desktop environment" and any display managers. Only leave "SSH server" and "standard system utilities" checked.</li>
+                <li>Install the GRUB bootloader, reboot the system, and remove the USB drive.</li>
+            </ol>
+        </section>
+
+        <section id="step3">
+            <h2>Step 3: Post-Install Optimization</h2>
+            <p>Log in via SSH or directly on the machine to apply the server optimizations.</p>
+            
+            <h3>1. Enforce No Swap Policy</h3>
+            <p>If a swap file/partition was accidentally created during install, disable it permanently.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab</div>
+            </div>
+
+            <h3>2. Hardening: Disable Unused Services</h3>
+            <p>Use Devuan's <code>update-rc.d</code> to remove unnecessary startup services, freeing up memory.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo update-rc.d -f bluetooth remove
+sudo update-rc.d -f cups remove
+sudo update-rc.d -f avahi-daemon remove</div>
+            </div>
+        </section>
+
+        <section id="step4">
+            <h2>Step 4: Install the App Stack</h2>
+            <p>Update your package lists and install the LEMP stack.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo apt update
+sudo apt install nginx mariadb-server php-fpm</div>
+            </div>
+
+            <h3>Secure MariaDB</h3>
+            <p>Run the built-in security script to remove test databases and lock down root access.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo mysql_secure_installation</div>
+            </div>
+            <p><em>(Press 'Y' for all prompts to apply secure defaults).</em></p>
+
+            <h3>Configure Nginx Virtual Host</h3>
+            <p>Link Nginx to PHP-FPM by editing the default site block.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo nano /etc/nginx/sites-available/default</div>
+            </div>
+            <p>Uncomment the PHP location block so it looks similar to this:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>nginx</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+}</div>
+            </div>
+            <p><em>(Note: Your PHP version number might differ. Adjust <code>php7.4-fpm.sock</code> to match your installed version).</em> Restart Nginx with <code>sudo service nginx restart</code>.</p>
+        </section>
+
+        <section id="step5">
+            <h2>Step 5: Verification</h2>
+            <p>Ensure the core web services are actively running and responding.</p>
+            
+            <h3>Check Nginx Service Status</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo service nginx status</div>
+            </div>
+            <p><em>(Because Devuan uses runit/sysvinit instead of systemd, we use <code>service</code> rather than <code>systemctl</code>. Ensure it reports as 'active' or 'running').</em></p>
+
+            <h3>Test the Web Server Locally</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">curl localhost</div>
+            </div>
+            <p><em>You should see the HTML output of the default "Welcome to nginx!" page.</em></p>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="troubleshooting-card">
+                <h4>systemctl command not found</h4>
+                <p>Remember, Devuan explicitly removes systemd. If you are following standard Debian tutorials, replace <code>systemctl restart [service]</code> with <code>sudo service [service] restart</code> or use runit's native <code>sv</code> command.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>PHP files are downloading instead of executing</h4>
+                <p>This means Nginx is not passing PHP files to the PHP-FPM processor. Double-check your <code>/etc/nginx/sites-available/default</code> configuration. Ensure the <code>fastcgi_pass</code> socket perfectly matches the version in <code>/var/run/php/</code>.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>MariaDB connection refused for non-root users</h4>
+                <p>By default, MariaDB might use unix_socket authentication for root. If you need a web app to connect to the database, log in as root (<code>sudo mysql</code>) and create a dedicated database user with a standard password using <code>GRANT ALL ON dbname.* TO 'user'@'localhost' IDENTIFIED BY 'password';</code></p>
+            </div>
+        </section>
+
+        <footer>
+            LegacyLink v2.0 | SDG 12.5 | Revive. Reuse. Reduce.<br>
+            <a href="../index.html">Return to Master Blueprint</a>
+        </footer>
+    </main>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeContent = btn.parentElement.nextElementSibling.textContent;
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.color = 'var(--primary)';
+                    btn.style.borderColor = 'var(--primary)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = 'var(--text-muted)';
+                        btn.style.borderColor = '#444';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

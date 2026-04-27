@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide: 64-bit | 4GB+ | Education</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        aside {
+            width: 280px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        .toc {
+            margin-top: 3rem;
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+            text-shadow: var(--glow);
+        }
+
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 4rem 3rem;
+            max-width: 1000px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            color: #ccc;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-code);
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .config-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .code-block:hover {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), var(--glow);
+            border-color: var(--primary);
+        }
+
+        .code-header {
+            background-color: #111;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: #00ff88;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .troubleshooting-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid #ffaa00;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .troubleshooting-card h4 {
+            color: #ffaa00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            text-shadow: var(--glow);
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <a href="../index.html" class="back-link">&larr; Back to LegacyLink</a>
+            
+            <ul class="toc">
+                <li><a href="#rationale">1. Why This Stack</a></li>
+                <li><a href="#prerequisites">2. Prerequisites</a></li>
+                <li><a href="#step1">3. Download & Flash</a></li>
+                <li><a href="#step2">4. Installation</a></li>
+                <li><a href="#step3">5. Optimization Layer</a></li>
+                <li><a href="#step4">6. Application Stack</a></li>
+                <li><a href="#step5">7. Verification</a></li>
+                <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="config-badge">64-bit CPU | 4GB+ RAM | Education</div>
+        <h1>Fedora Workstation</h1>
+        <p class="hero-desc">Deliver a top-tier academic and development environment. With 4GB+ of RAM, Fedora's reference GNOME desktop, transparent compression, and telemetry-free development tools provide a professional-grade student workstation.</p>
+
+        <section id="rationale">
+            <h2>Why This Stack</h2>
+            <ul>
+                <li><strong>Reference GNOME Experience:</strong> Fedora Workstation provides the purest, most stable implementation of the GNOME desktop environment, widely used in enterprise and academic settings.</li>
+                <li><strong>btrfs + zstd Default:</strong> Fedora automatically formats drives with btrfs and zstd compression. This transparently shrinks large files (like lab VMs), extending the life of older SSDs and expanding usable capacity.</li>
+                <li><strong>VSCodium:</strong> A community-driven, telemetry-free build of Microsoft VS Code. It provides all the necessary extensions and development features for Computer Science students without background tracking overhead.</li>
+                <li><strong>VirtualBox:</strong> With 4GB of RAM, students can comfortably run 1GB-2GB lightweight virtual machines (like Alpine or minimal Debian) for networking, security, and OS coursework.</li>
+                <li><strong>Anki & LibreOffice:</strong> The absolute best tools for spaced-repetition memorization and offline document creation, covering all standard academic requirements.</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>A 64-bit (x86_64) PC with 4GB (or more) of RAM.</li>
+                <li>A blank USB Flash Drive (8GB or larger recommended).</li>
+                <li>Hardware Virtualization (VT-x/AMD-V) enabled in the computer's BIOS/UEFI.</li>
+                <li>A reliable internet connection for downloading the development stack.</li>
+            </ul>
+        </section>
+
+        <section id="step1">
+            <h2>Step 1: Download & Flash</h2>
+            <p>Download the official <strong>Fedora Workstation Live</strong> ISO. This includes the full GNOME desktop environment and the graphical Anaconda installer.</p>
+            <p><a href="[https://fedoraproject.org/workstation/download/](https://fedoraproject.org/workstation/download/)" target="_blank">Download Fedora Workstation ISO &rarr;</a></p>
+            
+            <h3>Flashing via Linux Terminal</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dd if=Fedora-Workstation-Live-x86_64.iso of=/dev/sdX bs=4M status=progress</div>
+            </div>
+            <p><em>(Replace <code>/dev/sdX</code> with your actual USB drive identifier. Do not append partition numbers).</em></p>
+        </section>
+
+        <section id="step2">
+            <h2>Step 2: Installation Walkthrough</h2>
+            <ol>
+                <li>Boot from the USB drive and select <strong>Start Fedora Workstation</strong>.</li>
+                <li>Once the GNOME desktop loads, click the <strong>Install to Hard Drive</strong> icon.</li>
+                <li>Select your language and keyboard layout.</li>
+                <li><strong>Installation Destination:</strong> Select your target drive and leave the configuration on <strong>Automatic</strong>. Fedora will intelligently configure your btrfs subvolumes and ZRAM swap.</li>
+                <li>Click <strong>Begin Installation</strong>.</li>
+                <li>When the process finishes, reboot the system, remove the USB drive, and follow the on-screen prompts to create your student user account.</li>
+            </ol>
+        </section>
+
+        <section id="step3">
+            <h2>Step 3: Post-Install Optimization</h2>
+            <p>Because Fedora natively configures ZRAM, btrfs, and systemd-oomd, our post-install focuses on adding the necessary third-party repositories for our development tools.</p>
+
+            <h3>Add the VSCodium Repository</h3>
+            <p>Import the GPG key and add the VSCodium repository to Fedora's package manager.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo rpmkeys --import [https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg](https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg)
+printf "[gitlab.com_paulcarroty_vscodium_repo]\nname=download.vscodium.com\nbaseurl=[https://download.vscodium.com/rpms/](https://download.vscodium.com/rpms/)\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=[https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg](https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg)\nmetadata_expire=1h" | sudo tee -a /etc/yum.repos.d/vscodium.repo</div>
+            </div>
+
+            <h3>Install CompSize (btrfs utility)</h3>
+            <p>Install the <code>compsize</code> utility so we can actively measure how much space the btrfs filesystem is saving us.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dnf install compsize</div>
+            </div>
+        </section>
+
+        <section id="step4">
+            <h2>Step 4: Install the App Stack</h2>
+            <p>Install the educational suite, including LibreOffice, VirtualBox, VSCodium, and Anki.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dnf upgrade --refresh
+sudo dnf install @gnome libreoffice virtualbox vscodium anki</div>
+            </div>
+            <p><em>(Note: <code>@gnome</code> guarantees any missing core desktop packages are pulled in, though Workstation has most by default).</em></p>
+
+            <h3>Configure VirtualBox Users</h3>
+            <p>To allow the student user to manage VMs, map USB devices, and use bridged networking, add them to the <code>vboxusers</code> group.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo usermod -aG vboxusers $USER</div>
+            </div>
+            <p><em>(The user must log out and log back in for this group assignment to take effect).</em></p>
+        </section>
+
+        <section id="step5">
+            <h2>Step 5: Verification</h2>
+            <p>Ensure that storage compression, memory limits, and critical development applications are functioning.</p>
+            
+            <h3>Verify btrfs Compression Savings</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo compsize /home</div>
+            </div>
+            <p><em>This will calculate and display the exact percentage of disk space saved by the native zstd compression.</em></p>
+
+            <h3>Verify ZRAM Swap Configuration</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">cat /proc/swaps</div>
+            </div>
+            <p><em>You should see a <code>/dev/zram0</code> partition listed with the highest priority.</em></p>
+
+            <h3>Verify Application Installations</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">codium --version
+vboxmanage --version
+anki --version</div>
+            </div>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="troubleshooting-card">
+                <h4>VirtualBox Kernel Driver Not Loaded (vboxdrv)</h4>
+                <p>If VirtualBox refuses to start VMs and complains about <code>vboxdrv</code>, Secure Boot is likely blocking the unsigned third-party kernel module. Either disable Secure Boot in your UEFI/BIOS, or install <code>akmod-VirtualBox</code> and sign the module manually using Fedora's MokManager.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>Wayland Screen Sharing Issues</h4>
+                <p>Fedora Workstation uses the Wayland display server by default. If a student is trying to screen share in Zoom or Discord and gets a black screen, log out, click the gear icon in the bottom right corner of the password screen, and select "GNOME on Xorg".</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>VSCodium Extensions Marketplace Missing Items</h4>
+                <p>By default, VSCodium connects to the open-source Open VSX Registry, which may lack some proprietary Microsoft extensions (like Live Share or specific C# debuggers). Students can manually download <code>.vsix</code> files and install them directly within the editor if needed.</p>
+            </div>
+        </section>
+
+        <footer>
+            LegacyLink v2.0 | SDG 12.5 | Revive. Reuse. Reduce.<br>
+            <a href="../index.html">Return to Master Blueprint</a>
+        </footer>
+    </main>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeContent = btn.parentElement.nextElementSibling.textContent;
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.color = 'var(--primary)';
+                    btn.style.borderColor = 'var(--primary)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = 'var(--text-muted)';
+                        btn.style.borderColor = '#444';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide: 64-bit | 4GB+ | Home Server</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        aside {
+            width: 280px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        .toc {
+            margin-top: 3rem;
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+            text-shadow: var(--glow);
+        }
+
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 4rem 3rem;
+            max-width: 1000px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            color: #ccc;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-code);
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .config-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .code-block:hover {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), var(--glow);
+            border-color: var(--primary);
+        }
+
+        .code-header {
+            background-color: #111;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: #00ff88;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .troubleshooting-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid #ffaa00;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .troubleshooting-card h4 {
+            color: #ffaa00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            text-shadow: var(--glow);
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <a href="../index.html" class="back-link">&larr; Back to LegacyLink</a>
+            
+            <ul class="toc">
+                <li><a href="#rationale">1. Why This Stack</a></li>
+                <li><a href="#prerequisites">2. Prerequisites</a></li>
+                <li><a href="#step1">3. Download & Flash</a></li>
+                <li><a href="#step2">4. Installation</a></li>
+                <li><a href="#step3">5. Optimization Layer</a></li>
+                <li><a href="#step4">6. Application Stack</a></li>
+                <li><a href="#step5">7. Verification</a></li>
+                <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="config-badge">64-bit CPU | 4GB+ RAM | Home Server</div>
+        <h1>CachyOS / Arch Linux</h1>
+        <p class="hero-desc">Deploy a high-throughput, containerized home server. By utilizing modern kernel features like io_uring and cgroups v2 alongside aggressive caching, this stack handles demanding microservices effortlessly.</p>
+
+        <section id="rationale">
+            <h2>Why This Stack</h2>
+            <ul>
+                <li><strong>io_uring:</strong> A modern, highly efficient asynchronous I/O API in the Linux kernel. It provides a massive throughput boost for heavy I/O workloads like Docker databases and cache stores.</li>
+                <li><strong>cgroups v2:</strong> The unified hierarchy for resource control in Linux. It's the modern standard for Docker, offering superior memory management and preventing runaway containers from crashing your server.</li>
+                <li><strong>Traefik:</strong> A modern HTTP reverse proxy and load balancer that natively integrates with Docker. It automatically discovers containers and handles Let's Encrypt TLS routing on the fly.</li>
+                <li><strong>Redis Cache:</strong> Deploying an in-memory data structure store drastically reduces the read load on PostgreSQL databases, ensuring web applications respond instantly.</li>
+                <li><strong>BORE Scheduler:</strong> CachyOS's Burst-Oriented Response Enhancer (BORE) scheduler optimally distributes CPU time, preventing background server processes from starving each other during high-traffic spikes.</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>A 64-bit (x86_64) PC with 4GB (or more) of RAM.</li>
+                <li>A blank USB Flash Drive (4GB or larger).</li>
+                <li>A secondary computer for flashing the ISO image.</li>
+                <li>A wired Ethernet connection to your local network.</li>
+            </ul>
+        </section>
+
+        <section id="step1">
+            <h2>Step 1: Download & Flash</h2>
+            <p>Download the <strong>CachyOS</strong> Server/CLI ISO or a standard <strong>Arch Linux</strong> ISO. CachyOS is recommended as it pre-configures the BORE scheduler and performance repositories.</p>
+            <p><a href="[https://cachyos.org/download/](https://cachyos.org/download/)" target="_blank">Download CachyOS ISO &rarr;</a></p>
+            
+            <h3>Flashing via Linux Terminal</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dd if=cachyos-linux-x86_64.iso of=/dev/sdX bs=4M status=progress</div>
+            </div>
+            <p><em>(Replace <code>/dev/sdX</code> with your actual USB drive identifier. Do not append partition numbers).</em></p>
+        </section>
+
+        <section id="step2">
+            <h2>Step 2: Installation Walkthrough</h2>
+            <ol>
+                <li>Boot the server from the USB drive.</li>
+                <li>If using CachyOS, launch the CLI installer. If using Arch, use the <code>archinstall</code> script.</li>
+                <li><strong>Profile Selection:</strong> Choose a minimal/server profile. Do not install a desktop environment.</li>
+                <li><strong>Partitioning:</strong> Select your main drive, wipe it, and choose <strong>XFS</strong> as your filesystem. XFS is highly optimized for Docker's overlay2 storage driver.</li>
+                <li>Configure your network to use a static IP (or rely on a DHCP reservation from your router).</li>
+                <li>Create your administrator user, set the root password, complete the installation, and reboot.</li>
+            </ol>
+        </section>
+
+        <section id="step3">
+            <h2>Step 3: Post-Install Optimization</h2>
+            <p>Log in via SSH or physical terminal to verify kernel parameters.</p>
+
+            <h3>1. Verify io_uring Status</h3>
+            <p>Ensure the asynchronous I/O API is active to accelerate your database containers.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">cat /proc/sys/kernel/io_uring_disabled</div>
+            </div>
+            <p><em>This should output <code>0</code> or <code>2</code>. If it outputs <code>1</code>, io_uring is disabled globally.</em></p>
+
+            <h3>2. Verify cgroups v2</h3>
+            <p>Arch and CachyOS default to cgroups v2, but it is best to verify before configuring Docker.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">mount -l | grep cgroup2</div>
+            </div>
+            <p><em>If you see output indicating <code>cgroup2</code> is mounted at <code>/sys/fs/cgroup</code>, your system is correctly configured.</em></p>
+        </section>
+
+        <section id="step4">
+            <h2>Step 4: Install the App Stack</h2>
+            <p>Install the core components: container runtime, reverse proxy, database, and cache layer.</p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo pacman -Syu
+sudo pacman -S docker traefik postgresql redis</div>
+            </div>
+
+            <h3>Enable Docker and Redis</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo systemctl enable --now docker
+sudo systemctl enable --now redis</div>
+            </div>
+
+            <h3>Configure Traefik for Docker</h3>
+            <p>Set up Traefik to automatically route traffic based on container labels.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo nano /etc/traefik/traefik.yml</div>
+            </div>
+            <p>Add the following minimal configuration:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>yaml</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"</div>
+            </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo systemctl enable --now traefik</div>
+            </div>
+
+            <h3>Configure Redis Memory Limit</h3>
+            <p>To prevent Redis from starving PostgreSQL, cap its memory usage.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo sed -i 's/^# maxmemory <bytes>/maxmemory 512mb/' /etc/redis/redis.conf
+sudo sed -i 's/^# maxmemory-policy noeviction/maxmemory-policy allkeys-lru/' /etc/redis/redis.conf
+sudo systemctl restart redis</div>
+            </div>
+        </section>
+
+        <section id="step5">
+            <h2>Step 5: Verification</h2>
+            <p>Run these commands to ensure your high-performance services are active and communicating.</p>
+            
+            <h3>Verify Docker Resource Control</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo docker info | grep -i cgroup</div>
+            </div>
+            <p><em>Output should specify <code>Cgroup Driver: systemd</code> and <code>Cgroup Version: 2</code>.</em></p>
+
+            <h3>Verify Redis Connectivity</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">redis-cli ping</div>
+            </div>
+            <p><em>The server should respond with <code>PONG</code>.</em></p>
+
+            <h3>Verify Traefik</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">traefik version</div>
+            </div>
+            <p><em>Ensures the reverse proxy binary is installed and executable.</em></p>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="troubleshooting-card">
+                <h4>Permission Denied when running Docker commands</h4>
+                <p>If you are not running as root, your user needs to be added to the Docker group. Run <code>sudo usermod -aG docker $USER</code>, then log out and completely log back in to apply the group permissions.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>Traefik cannot see Docker containers</h4>
+                <p>If Traefik isn't routing traffic to your containers, ensure the <code>traefik</code> user has permission to read the Docker socket. Additionally, because we set <code>exposedByDefault: false</code> in the YAML, you MUST add the label <code>traefik.enable=true</code> to your Docker compose files for Traefik to pick them up.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>PostgreSQL / Redis crashes due to Out-of-Memory (OOM)</h4>
+                <p>If 4GB isn't enough for your specific workloads, ensure you have configured a swap file or ZRAM. In Arch, you can quickly generate a swapfile: <code>sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile</code>.</p>
+            </div>
+        </section>
+
+        <footer>
+            LegacyLink v2.0 | SDG 12.5 | Revive. Reuse. Reduce.<br>
+            <a href="../index.html">Return to Master Blueprint</a>
+        </footer>
+    </main>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeContent = btn.parentElement.nextElementSibling.textContent;
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.color = 'var(--primary)';
+                    btn.style.borderColor = 'var(--primary)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = 'var(--text-muted)';
+                        btn.style.borderColor = '#444';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

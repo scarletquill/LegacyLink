@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide: 32-bit | 4GB+ | Education</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        aside {
+            width: 280px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        .toc {
+            margin-top: 3rem;
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+            text-shadow: var(--glow);
+        }
+
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 4rem 3rem;
+            max-width: 1000px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            color: #ccc;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-code);
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .config-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .code-block:hover {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), var(--glow);
+            border-color: var(--primary);
+        }
+
+        .code-header {
+            background-color: #111;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: #00ff88;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .troubleshooting-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid #ffaa00;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .troubleshooting-card h4 {
+            color: #ffaa00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            text-shadow: var(--glow);
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <a href="../index.html" class="back-link">&larr; Back to LegacyLink</a>
+            
+            <ul class="toc">
+                <li><a href="#rationale">1. Why This Stack</a></li>
+                <li><a href="#prerequisites">2. Prerequisites</a></li>
+                <li><a href="#step1">3. Download & Flash</a></li>
+                <li><a href="#step2">4. Installation</a></li>
+                <li><a href="#step3">5. Optimization Layer</a></li>
+                <li><a href="#step4">6. Application Stack</a></li>
+                <li><a href="#step5">7. Verification</a></li>
+                <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="config-badge">32-bit CPU | 4GB+ RAM | Education</div>
+        <h1>MX Linux + Xfce</h1>
+        <p class="hero-desc">Empower students with a fully-featured desktop environment. Leveraging 4GB of RAM, we utilize the Xfce desktop and the preload daemon to deliver a highly responsive educational workstation capable of handling design tools and virtual labs.</p>
+
+        <section id="rationale">
+            <h2>Why This Stack</h2>
+            <ul>
+                <li><strong>Xfce Desktop Environment:</strong> Provides a traditional, full-featured desktop experience that is vastly lighter than GNOME or KDE, leaving the bulk of your 4GB RAM free for intensive applications.</li>
+                <li><strong>Preload Daemon:</strong> Since we have 4GB of RAM to spare, we install <code>preload</code>, an adaptive background service that learns usage patterns and caches frequently used applications into memory for near-instant startup times.</li>
+                <li><strong>GIMP:</strong> A professional-grade image manipulation program essential for art, design, and media students.</li>
+                <li><strong>VirtualBox:</strong> Allows computer science students to run isolated lab environments or secondary operating systems (like a minimal Linux server) directly on their workstation.</li>
+                <li><strong>XFS Filesystem:</strong> When dealing with large, contiguous files like VirtualBox disk images (.vdi), XFS dramatically outperforms ext4 in read/write operations and file allocation.</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>A 32-bit (x86) legacy PC with 4GB (or more) of RAM.</li>
+                <li>A blank USB Flash Drive (4GB or larger).</li>
+                <li>A secondary computer for flashing the ISO image.</li>
+                <li>A stable internet connection.</li>
+            </ul>
+        </section>
+
+        <section id="step1">
+            <h2>Step 1: Download & Flash</h2>
+            <p>Download the standard <strong>MX Linux 32-bit (Xfce)</strong> ISO from their official repository. This is the flagship edition and provides the best out-of-the-box experience.</p>
+            <p><a href="[https://mxlinux.org/download-links/](https://mxlinux.org/download-links/)" target="_blank">Download MX Linux 32-bit ISO &rarr;</a></p>
+            
+            <h3>Flashing via Linux Terminal</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dd if=MX-23_386.iso of=/dev/sdX bs=4M status=progress</div>
+            </div>
+            <p><em>(Replace <code>/dev/sdX</code> with your actual USB drive identifier. Do not append partition numbers).</em></p>
+        </section>
+
+        <section id="step2">
+            <h2>Step 2: Installation Walkthrough</h2>
+            <ol>
+                <li>Boot the legacy machine from the prepared USB drive.</li>
+                <li>Launch the graphical installer from the live desktop.</li>
+                <li><strong>Critical Partitioning Step:</strong> When prompted to configure your partitions, choose <strong>Custom Install</strong>. Assign your root (<code>/</code>) and home (<code>/home</code>) partitions to use the <strong>XFS</strong> filesystem instead of the default ext4. This is vital for VirtualBox performance.</li>
+                <li>Proceed through the remaining setup screens to create your student/admin user account.</li>
+                <li>Reboot the system and remove the USB drive.</li>
+            </ol>
+        </section>
+
+        <section id="step3">
+            <h2>Step 3: Post-Install Optimization</h2>
+            <p>We will apply XFS for external storage, initialize ZRAM, and set up the preload daemon.</p>
+            
+            <h3>1. Format VirtualBox Drive to XFS (If applicable)</h3>
+            <p>If you have a secondary hard drive strictly for storing VM images, format it to XFS.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo mkfs.xfs -f /dev/sdb1</div>
+            </div>
+
+            <h3>2. Enable Preload Daemon</h3>
+            <p>Install the preload utility to intelligently utilize your 4GB of RAM for application caching.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo apt update
+sudo apt install preload
+sudo systemctl enable preload
+sudo systemctl start preload</div>
+            </div>
+
+            <h3>3. Setup 30% ZRAM</h3>
+            <p>Use the built-in MX Tools to enable memory compression as a safety net.</p>
+            <ol>
+                <li>Open <strong>MX Tools</strong> from the application menu.</li>
+                <li>Click <strong>MX Tweak</strong> and navigate to the <strong>Performance</strong> tab.</li>
+                <li>Enable ZRAM and set it to roughly 30% of your total RAM (~1.2GB).</li>
+            </ol>
+        </section>
+
+        <section id="step4">
+            <h2>Step 4: Install the App Stack</h2>
+            <p>Use the terminal to quickly fetch the advanced educational suite.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo apt install libreoffice gimp virtualbox</div>
+            </div>
+
+            <h3>Setting up VirtualBox for Labs</h3>
+            <p>To allow your standard user to utilize USB devices and network bridging inside VirtualBox, you must add them to the <code>vboxusers</code> group.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo usermod -aG vboxusers $USER</div>
+            </div>
+            <p><em>(You must log out and log back in for this group change to take effect. When creating a new VM in VirtualBox, remember to allocate no more than 1GB of RAM to the guest OS to prevent starving the host).</em></p>
+        </section>
+
+        <section id="step5">
+            <h2>Step 5: Verification</h2>
+            <p>Verify that your background optimizations and heavy applications are correctly deployed.</p>
+            
+            <h3>Check Preload Status</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo systemctl status preload</div>
+            </div>
+            <p><em>Output should indicate the service is active and running.</em></p>
+
+            <h3>Verify VirtualBox</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">vboxmanage --version</div>
+            </div>
+            <p><em>Output will display the installed version of VirtualBox.</em></p>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="troubleshooting-card">
+                <h4>VirtualBox cannot run 64-bit VMs</h4>
+                <p>Because you are installing this on a 32-bit host operating system, VirtualBox is restricted to running 32-bit guest operating systems. Ensure any ISOs you download for lab work (like Alpine or Debian) are explicitly the 32-bit (x86/i386) versions.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>Preload is consuming too much RAM</h4>
+                <p>If you find that your active memory is constantly maxed out, preload might be caching too aggressively. You can tweak its behavior by editing <code>/etc/preload.conf</code>, or simply disable it entirely with <code>sudo systemctl disable --now preload</code>.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>VirtualBox VMs run extremely slowly</h4>
+                <p>Ensure that Hardware Virtualization (VT-x/AMD-V) is enabled in your computer's BIOS/UEFI. Even on older 32-bit processors, this feature is often present but disabled by default by the manufacturer.</p>
+            </div>
+        </section>
+
+        <footer>
+            LegacyLink v2.0 | SDG 12.5 | Revive. Reuse. Reduce.<br>
+            <a href="../index.html">Return to Master Blueprint</a>
+        </footer>
+    </main>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeContent = btn.parentElement.nextElementSibling.textContent;
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.color = 'var(--primary)';
+                    btn.style.borderColor = 'var(--primary)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = 'var(--text-muted)';
+                        btn.style.borderColor = '#444';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

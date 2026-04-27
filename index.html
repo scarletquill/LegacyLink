@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LegacyLink v2.0: EcoCompute Architect</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        /* Layout */
+        aside {
+            width: 320px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
+            background: rgba(10, 10, 10, 0.85); /* Dark overlay over carbon fiber */
+            backdrop-filter: blur(5px);
+        }
+
+        main {
+            margin-left: 320px;
+            flex-grow: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header & Typography */
+        header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: var(--glow);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        h2, h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Form Controls */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        select {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid #333;
+            padding: 0.8rem;
+            border-radius: 4px;
+            font-family: var(--font-ui);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+        }
+
+        button {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 1rem;
+            font-family: var(--font-code);
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        /* About Section */
+        .about-section {
+            background-color: rgba(26, 26, 26, 0.8);
+            padding: 1rem;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #aaa;
+            margin-top: auto;
+        }
+
+        .about-section strong {
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+        }
+
+        /* Main Content - Blueprint */
+        #blueprint-container {
+            width: 100%;
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            display: none;
+        }
+
+        #blueprint-container.active {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary);
+            box-shadow: var(--glow);
+        }
+
+        /* Blueprint Header */
+        .blueprint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1.5rem;
+        }
+
+        .os-badge {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+        }
+
+        .system-profile {
+            text-align: right;
+            font-family: var(--font-code);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .system-profile span {
+            color: var(--text-main);
+        }
+
+        /* Grid Layout for details */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: var(--font-code);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        /* Chips/Tags */
+        .chip-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .chip {
+            background-color: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+        }
+
+        /* Lists */
+        .app-list {
+            list-style: none;
+        }
+
+        .app-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #333;
+            font-size: 1.1rem;
+        }
+
+        .app-list li::before {
+            content: '>';
+            color: var(--primary);
+            margin-right: 0.5rem;
+            font-family: var(--font-code);
+        }
+
+        /* Terminal & Command */
+        .terminal-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 1.5rem;
+            position: relative;
+            font-family: var(--font-code);
+            margin-bottom: 2rem;
+        }
+
+        .terminal-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 24px;
+            background-color: #222;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot.red { background-color: #ff5f56; }
+        .dot.yellow { background-color: #ffbd2e; }
+        .dot.green { background-color: #27c93f; }
+
+        .command-wrap {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .command-text {
+            color: #ddd;
+            word-break: break-all;
+            flex-grow: 1;
+        }
+
+        .prompt-symbol {
+            color: var(--primary);
+            margin-right: 10px;
+            user-select: none;
+        }
+
+        .copy-btn {
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            margin-top: 0;
+            border-radius: 4px;
+        }
+        .copy-btn:hover {
+            background: #333;
+            box-shadow: none;
+            border-color: var(--primary);
+        }
+
+        /* CO2 Metric */
+        .co2-metric {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(180deg, rgba(0, 255, 136, 0.05) 0%, transparent 100%);
+            border: 1px dashed rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .co2-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            font-family: var(--font-code);
+        }
+
+        .co2-label {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Typewriter specific */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: var(--primary);
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Setup Link Button */
+        .setup-link {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            text-decoration: none;
+            padding: 1.2rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .setup-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .blueprint-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .system-profile {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <header>
+                <h1>LegacyLink</h1>
+                <p>Revive. Reuse. Reduce.</p>
+            </header>
+
+            <div class="form-group">
+                <label for="cpu-arch">CPU Architecture</label>
+                <select id="cpu-arch">
+                    <option value="32bit">32-bit (x86)</option>
+                    <option value="64bit">64-bit (x86_64)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ram">Available RAM</label>
+                <select id="ram">
+                    <option value="512MB">512 MB</option>
+                    <option value="2GB">2 GB</option>
+                    <option value="4GB">4 GB+</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="goal">Primary Goal</label>
+                <select id="goal">
+                    <option value="Daily">Daily Driver (Desktop)</option>
+                    <option value="Server">Home Server</option>
+                    <option value="Edu">Education / Dev</option>
+                </select>
+            </div>
+
+            <button id="generate-btn">Generate Revival Plan</button>
+
+            <div class="about-section">
+                <strong>SDG 12.5 | E-Waste Reduction</strong>
+                This tool operates as an Expert System to prevent legacy hardware from entering landfills. By matching precise software stacks to outdated hardware constraints, we extend device lifecycles and offset carbon emissions.
+            </div>
+
+            <footer>
+                SDG 12.5 | Combating E-Waste | LegacyLink v2.0
+            </footer>
+        </div>
+    </aside>
+
+    <main>
+        <div id="blueprint-container">
+            <div class="card">
+                <div class="blueprint-header">
+                    <div id="os-name" class="os-badge">OS Name</div>
+                    <div class="system-profile">
+                        <div>CPU: <span id="profile-cpu"></span></div>
+                        <div>RAM: <span id="profile-ram"></span></div>
+                        <div>ROLE: <span id="profile-role"></span></div>
+                    </div>
+                </div>
+
+                <div class="details-grid">
+                    <div>
+                        <div class="section-title">Optimization Layer</div>
+                        <div id="opt-container" class="chip-container">
+                            </div>
+                    </div>
+                    <div>
+                        <div class="section-title">Application Stack</div>
+                        <ul id="app-list" class="app-list">
+                            </ul>
+                    </div>
+                </div>
+
+                <div class="section-title">Terminal Deployment Sequence</div>
+                <div class="terminal-block">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <div class="dot red"></div>
+                            <div class="dot yellow"></div>
+                            <div class="dot green"></div>
+                        </div>
+                    </div>
+                    <div class="command-wrap">
+                        <div class="command-text">
+                            <span class="prompt-symbol">root@legacy:~#</span>
+                            <span id="typewriter"></span><span class="cursor"></span>
+                        </div>
+                        <button class="copy-btn" id="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <div class="co2-metric">
+                    <div class="co2-value"><span id="co2-val"></span> kg</div>
+                    <div class="co2-label">Est. Carbon Offset vs. New Hardware (1 Year)</div>
+                </div>
+
+                <a href="#" id="guide-link" class="setup-link" target="_blank">Open Full Setup Guide &rarr;</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Core Logic - 18 Configurations Matrix
+        const configs = {
+            "32bit_512MB_Daily": { 
+                os: "Tiny Core Linux", 
+                opt: "ZRAM, ext2, noop scheduler", 
+                apps: "JWM, Dillo, Sylpheed", 
+                cmd: "tce-load -wi jwm sylpheed",
+                guide: "guides/32bit-512mb-daily.html"
+            },
+            "32bit_512MB_Server": { 
+                os: "Alpine 3.x (32-bit)", 
+                opt: "tmpfs /tmp, musl libc, noop", 
+                apps: "BusyBox httpd, Dropbear SSH", 
+                cmd: "apk add busybox-extras dropbear",
+                guide: "guides/32bit-512mb-server.html"
+            },
+            "32bit_512MB_Edu": { 
+                os: "Puppy Linux (Fossapup)", 
+                opt: "ZRAM, aufs, SFS layering", 
+                apps: "Gnumeric, ePDFView, Falkon-lite", 
+                cmd: "puppy-pkg install gnumeric epdview",
+                guide: "guides/32bit-512mb-edu.html"
+            },
+            "32bit_2GB_Daily": { 
+                os: "AntiX", 
+                opt: "ZRAM 50%, ext4, BFQ scheduler", 
+                apps: "IceWM, Pale Moon, Thunar", 
+                cmd: "apt install icewm palemoon-bin",
+                guide: "guides/32bit-2gb-daily.html"
+            },
+            "32bit_2GB_Server": { 
+                os: "Devuan Chimaera", 
+                opt: "ext4, no swap, runit, hardened kernel", 
+                apps: "Nginx, MariaDB, PHP-FPM", 
+                cmd: "apt install nginx mariadb-server php-fpm",
+                guide: "guides/32bit-2gb-server.html"
+            },
+            "32bit_2GB_Edu": { 
+                os: "MX Linux (32-bit)", 
+                opt: "ZRAM, ext4, MX-Packageinstaller", 
+                apps: "LibreOffice, VLC, Firefox-ESR", 
+                cmd: "apt install libreoffice vlc firefox-esr",
+                guide: "guides/32bit-2gb-edu.html"
+            },
+            "32bit_4GB_Daily": { 
+                os: "AntiX + Openbox", 
+                opt: "ZRAM 30%, XFS, BFQ", 
+                apps: "Openbox, Pale Moon, PCManFM", 
+                cmd: "apt install openbox pcmanfm palemoon-bin",
+                guide: "guides/32bit-4gb-daily.html"
+            },
+            "32bit_4GB_Server": { 
+                os: "Devuan + Docker-ce", 
+                opt: "XFS, cgroups v1, runit", 
+                apps: "Docker, Nginx, fail2ban", 
+                cmd: "apt install docker-ce nginx fail2ban",
+                guide: "guides/32bit-4gb-server.html"
+            },
+            "32bit_4GB_Edu": { 
+                os: "MX Linux + Xfce", 
+                opt: "ZRAM, XFS, preload", 
+                apps: "LibreOffice, GIMP, VirtualBox", 
+                cmd: "apt install libreoffice gimp virtualbox",
+                guide: "guides/32bit-4gb-edu.html"
+            },
+            "64bit_512MB_Daily": { 
+                os: "Alpine + Sway", 
+                opt: "ZRAM, F2FS, noop", 
+                apps: "Sway, Foot, Links2, Mako", 
+                cmd: "apk add sway foot links2 mako",
+                guide: "guides/64bit-512mb-daily.html"
+            },
+            "64bit_512MB_Server": { 
+                os: "Alpine Linux", 
+                opt: "tmpfs, musl, noop, hardened", 
+                apps: "Caddy, Dropbear, cronie", 
+                cmd: "apk add caddy dropbear cronie",
+                guide: "guides/64bit-512mb-server.html"
+            },
+            "64bit_512MB_Edu": { 
+                os: "Alpine + Xorg", 
+                opt: "ZRAM, ext4, noop", 
+                apps: "Xfce-minimal, ePDFView, Gnumeric", 
+                cmd: "apk add xfce4 epdfview gnumeric",
+                guide: "guides/64bit-512mb-edu.html"
+            },
+            "64bit_2GB_Daily": { 
+                os: "EndeavourOS + i3", 
+                opt: "ZRAM 50%, ext4, BFQ, systemd-oomd", 
+                apps: "i3-wm, Alacritty, Thunar, Brave", 
+                cmd: "pacman -S i3-wm alacritty thunar brave-bin",
+                guide: "guides/64bit-2gb-daily.html"
+            },
+            "64bit_2GB_Server": { 
+                os: "Arch Linux", 
+                opt: "XFS, noop, systemd hardening", 
+                apps: "Nginx, PostgreSQL, certbot", 
+                cmd: "pacman -S nginx postgresql certbot",
+                guide: "guides/64bit-2gb-server.html"
+            },
+            "64bit_2GB_Edu": { 
+                os: "Fedora (minimal)", 
+                opt: "ZRAM, btrfs+zstd, systemd-oomd", 
+                apps: "GNOME-lite, LibreOffice, Anki", 
+                cmd: "dnf install @gnome libreoffice anki",
+                guide: "guides/64bit-2gb-edu.html"
+            },
+            "64bit_4GB_Daily": { 
+                os: "CachyOS + Hyprland", 
+                opt: "ZRAM, XFS, BORE scheduler, ALHP", 
+                apps: "Hyprland, Kitty, Dolphin, Zen Browser", 
+                cmd: "pacman -S hyprland kitty dolphin zen-browser",
+                guide: "guides/64bit-4gb-daily.html"
+            },
+            "64bit_4GB_Server": { 
+                os: "CachyOS / Arch", 
+                opt: "XFS, BORE, cgroups v2, io_uring", 
+                apps: "Docker, Traefik, PostgreSQL, Redis", 
+                cmd: "pacman -S docker traefik postgresql redis",
+                guide: "guides/64bit-4gb-server.html"
+            },
+            "64bit_4GB_Edu": { 
+                os: "Fedora Workstation", 
+                opt: "btrfs+zstd, ZRAM 30%, systemd-oomd", 
+                apps: "GNOME, LibreOffice, VirtualBox, VSCodium, Anki", 
+                cmd: "dnf install @gnome libreoffice virtualbox vscodium anki",
+                guide: "guides/64bit-4gb-edu.html"
+            }
+        };
+
+        // DOM Elements
+        const btnGenerate = document.getElementById('generate-btn');
+        const container = document.getElementById('blueprint-container');
+        const typewriterEl = document.getElementById('typewriter');
+        let typingTimeout;
+
+        // Interaction Logic
+        btnGenerate.addEventListener('click', () => {
+            const arch = document.getElementById('cpu-arch').value;
+            const ram = document.getElementById('ram').value;
+            const goal = document.getElementById('goal').value;
+
+            const configKey = `${arch}_${ram}_${goal}`;
+            const conf = configs[configKey];
+
+            if (!conf) {
+                alert("Configuration not found.");
+                return;
+            }
+
+            // Hide to restart animation
+            container.classList.remove('active');
+            clearTimeout(typingTimeout);
+            typewriterEl.textContent = '';
+
+            setTimeout(() => {
+                // Populate Profile
+                document.getElementById('profile-cpu').textContent = document.getElementById('cpu-arch').options[document.getElementById('cpu-arch').selectedIndex].text;
+                document.getElementById('profile-ram').textContent = document.getElementById('ram').options[document.getElementById('ram').selectedIndex].text;
+                document.getElementById('profile-role').textContent = document.getElementById('goal').options[document.getElementById('goal').selectedIndex].text;
+
+                // Populate Specs
+                document.getElementById('os-name').textContent = conf.os;
+                
+                // Chips
+                const optContainer = document.getElementById('opt-container');
+                optContainer.innerHTML = '';
+                conf.opt.split(',').forEach(opt => {
+                    const span = document.createElement('span');
+                    span.className = 'chip';
+                    span.textContent = opt.trim();
+                    optContainer.appendChild(span);
+                });
+
+                // Apps
+                const appList = document.getElementById('app-list');
+                appList.innerHTML = '';
+                conf.apps.split(',').forEach(app => {
+                    const li = document.createElement('li');
+                    li.textContent = app.trim();
+                    appList.appendChild(li);
+                });
+
+                // CO2 Calculation
+                // Formula: CO2 = (RAM_in_GB * 85) + 120 kg/year
+                let ramGB = 0;
+                if(ram === "512MB") ramGB = 0.5;
+                if(ram === "2GB") ramGB = 2;
+                if(ram === "4GB") ramGB = 4;
+                const co2Offset = (ramGB * 85) + 120;
+                
+                // Animate CO2 number
+                let currentCo2 = 0;
+                const co2El = document.getElementById('co2-val');
+                const co2Interval = setInterval(() => {
+                    currentCo2 += 5;
+                    if(currentCo2 >= co2Offset) {
+                        co2El.textContent = co2Offset.toFixed(1);
+                        clearInterval(co2Interval);
+                    } else {
+                        co2El.textContent = currentCo2.toFixed(1);
+                    }
+                }, 15);
+
+                // Guide Link
+                document.getElementById('guide-link').href = conf.guide;
+                
+                // Store raw command for copy
+                document.getElementById('copy-btn').dataset.cmd = conf.cmd;
+
+                // Show Container
+                container.style.display = 'block';
+                // Trigger reflow
+                void container.offsetWidth;
+                container.classList.add('active');
+
+                // Typewriter effect for command
+                let i = 0;
+                function typeWriter() {
+                    if (i < conf.cmd.length) {
+                        typewriterEl.textContent += conf.cmd.charAt(i);
+                        i++;
+                        typingTimeout = setTimeout(typeWriter, 35);
+                    }
+                }
+                setTimeout(typeWriter, 500); // Wait for container fade in
+
+            }, 200);
+        });
+
+        // Copy Button Logic
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const cmdText = this.dataset.cmd;
+            navigator.clipboard.writeText(cmdText).then(() => {
+                const originalText = this.textContent;
+                this.textContent = 'Copied!';
+                this.style.color = 'var(--primary)';
+                this.style.borderColor = 'var(--primary)';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.style.color = '#fff';
+                    this.style.borderColor = '#444';
+                }, 2000);
+            });
+        });
+
+    </script>
+</body>
+</html>

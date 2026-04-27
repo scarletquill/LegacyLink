@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide: 64-bit | 2GB | Home Server</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        aside {
+            width: 280px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        .toc {
+            margin-top: 3rem;
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+            text-shadow: var(--glow);
+        }
+
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 4rem 3rem;
+            max-width: 1000px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            color: #ccc;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-code);
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .config-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .code-block:hover {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), var(--glow);
+            border-color: var(--primary);
+        }
+
+        .code-header {
+            background-color: #111;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: #00ff88;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .troubleshooting-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid #ffaa00;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .troubleshooting-card h4 {
+            color: #ffaa00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            text-shadow: var(--glow);
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <a href="../index.html" class="back-link">&larr; Back to LegacyLink</a>
+            
+            <ul class="toc">
+                <li><a href="#rationale">1. Why This Stack</a></li>
+                <li><a href="#prerequisites">2. Prerequisites</a></li>
+                <li><a href="#step1">3. Download & Flash</a></li>
+                <li><a href="#step2">4. Installation</a></li>
+                <li><a href="#step3">5. Optimization Layer</a></li>
+                <li><a href="#step4">6. Application Stack</a></li>
+                <li><a href="#step5">7. Verification</a></li>
+                <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="config-badge">64-bit CPU | 2GB RAM | Home Server</div>
+        <h1>Arch Linux (Minimal)</h1>
+        <p class="hero-desc">Achieve maximum control and zero bloat. By utilizing a minimal Arch Linux installation, we dedicate every megabyte of your 2GB RAM strictly to hosting secure, high-performance database workloads.</p>
+
+        <section id="rationale">
+            <h2>Why This Stack</h2>
+            <ul>
+                <li><strong>Arch Minimal Install:</strong> Arch gives you exactly what you install and nothing more. This zero-bloat foundation is ideal for servers where every megabyte counts.</li>
+                <li><strong>XFS Filesystem:</strong> A robust, production-grade filesystem that PostgreSQL heavily favors for data integrity and parallel I/O handling on database workloads.</li>
+                <li><strong>systemd Hardening:</strong> Utilizing systemd's built-in security directives (like <code>PrivateTmp</code> and <code>NoNewPrivileges</code>) automatically sandboxes exposed services.</li>
+                <li><strong>certbot Automation:</strong> Seamlessly integrates with Nginx to issue, configure, and automatically renew free Let's Encrypt SSL/TLS certificates.</li>
+                <li><strong>noop Scheduler:</strong> For modern, SSD-based legacy hardware, bypassing the kernel's complex I/O queue sorting minimizes CPU latency, speeding up direct disk writes.</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>A 64-bit (x86_64) legacy PC with 2GB of RAM.</li>
+                <li>A blank USB Flash Drive (2GB or larger).</li>
+                <li>A secondary computer for flashing the Arch ISO image.</li>
+                <li>A wired Ethernet connection (strictly required for the net-installer).</li>
+            </ul>
+        </section>
+
+        <section id="step1">
+            <h2>Step 1: Download & Flash</h2>
+            <p>Download the latest official <strong>Arch Linux</strong> ISO. The image acts as a live environment to construct your custom server from scratch.</p>
+            <p><a href="[https://archlinux.org/download/](https://archlinux.org/download/)" target="_blank">Download Arch Linux ISO &rarr;</a></p>
+            
+            <h3>Flashing via Linux Terminal</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dd if=archlinux-x86_64.iso of=/dev/sdX bs=4M status=progress</div>
+            </div>
+            <p><em>(Replace <code>/dev/sdX</code> with your actual USB drive identifier. Do not append partition numbers).</em></p>
+        </section>
+
+        <section id="step2">
+            <h2>Step 2: Installation Walkthrough</h2>
+            <ol>
+                <li>Boot the server from the USB drive. You will drop into a root command prompt.</li>
+                <li>Ensure you have internet connectivity by pinging an external server (<code>ping archlinux.org</code>).</li>
+                <li>Launch the guided installer by typing: <code>archinstall</code>.</li>
+                <li>Set your keyboard layout, locale, and region.</li>
+                <li><strong>Drive & Partitioning:</strong> Select your target drive. Choose to format the drive, and explicitly select <strong>XFS</strong> as the filesystem.</li>
+                <li><strong>Profile Selection:</strong> Choose the <strong>minimal</strong> profile. Do not select a desktop environment.</li>
+                <li>Configure network (NetworkManager is recommended), create a superuser account, and set the root password.</li>
+                <li>Save the configuration and hit Install. Once finished, type <code>reboot</code>.</li>
+            </ol>
+        </section>
+
+        <section id="step3">
+            <h2>Step 3: Post-Install Optimization</h2>
+            <p>Log into your newly installed minimal server to apply kernel and security optimizations.</p>
+
+            <h3>1. Configure the noop Scheduler</h3>
+            <p>If your server uses an SSD, tell the kernel to bypass legacy mechanical sorting.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">echo none | sudo tee /sys/block/sda/queue/scheduler</div>
+            </div>
+            <p><em>(Note: Modern kernels use "none" as the equivalent for the legacy "noop". Replace <code>sda</code> with your actual drive identifier).</em></p>
+
+            <h3>2. systemd Service Hardening</h3>
+            <p>Protect your server by sandboxing the Nginx web server using systemd override files.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo systemctl edit nginx</div>
+            </div>
+            <p>Add the following directives between the commented boundaries:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>systemd</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">[Service]
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true</div>
+            </div>
+        </section>
+
+        <section id="step4">
+            <h2>Step 4: Install the App Stack</h2>
+            <p>Deploy the web server, database, and SSL automation tools.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo pacman -Syu
+sudo pacman -S nginx postgresql certbot certbot-nginx</div>
+            </div>
+
+            <h3>Initialize PostgreSQL</h3>
+            <p>Before starting PostgreSQL, you must initialize its data directory as the <code>postgres</code> user.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo -u postgres initdb -D /var/lib/postgres/data
+sudo systemctl enable --now postgresql</div>
+            </div>
+
+            <h3>Nginx & Certbot Integration</h3>
+            <p>Start the web server, then run certbot to automatically provision your SSL certificate.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo systemctl enable --now nginx
+sudo certbot --nginx</div>
+            </div>
+            <p><em>(Follow the interactive prompts to secure your specified domain name. Certbot will automatically rewrite your Nginx config for HTTPS).</em></p>
+
+            <p>Enable the certbot timer to automate certificate renewals:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo systemctl enable --now certbot.timer</div>
+            </div>
+        </section>
+
+        <section id="step5">
+            <h2>Step 5: Verification</h2>
+            <p>Confirm the core database and web services are securely running.</p>
+            
+            <h3>Verify PostgreSQL</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">psql --version
+sudo systemctl status postgresql</div>
+            </div>
+
+            <h3>Test Nginx Configuration</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo nginx -t</div>
+            </div>
+            <p><em>Ensure it reports syntax is OK and the test is successful, especially after certbot modifications.</em></p>
+
+            <h3>Verify Certificates</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo certbot certificates</div>
+            </div>
+            <p><em>Lists all managed certificates and their expiration dates.</em></p>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="troubleshooting-card">
+                <h4>archinstall script fails or crashes</h4>
+                <p>Ensure you are fully connected to the internet before launching the script. If downloading packages fails, exit the installer and run <code>reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist</code> to update your mirror list to the fastest servers before trying again.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>PostgreSQL fails to start (Job for postgresql.service failed)</h4>
+                <p>This almost always means the database cluster was not initialized. Check <code>/var/lib/postgres/data</code>. If it's empty, run the <code>initdb</code> command exactly as shown in Step 4. Do not run <code>initdb</code> as root; it must be executed as the <code>postgres</code> user.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>Certbot cannot complete the ACME challenge</h4>
+                <p>Certbot requires ports 80 and 443 to be externally visible. Verify that your router is forwarding these ports to your Arch server's static IP address. Also, confirm your DNS A-record points to your router's public IP.</p>
+            </div>
+        </section>
+
+        <footer>
+            LegacyLink v2.0 | SDG 12.5 | Revive. Reuse. Reduce.<br>
+            <a href="../index.html">Return to Master Blueprint</a>
+        </footer>
+    </main>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeContent = btn.parentElement.nextElementSibling.textContent;
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.color = 'var(--primary)';
+                    btn.style.borderColor = 'var(--primary)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = 'var(--text-muted)';
+                        btn.style.borderColor = '#444';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

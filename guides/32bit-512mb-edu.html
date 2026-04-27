@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide: 32-bit | 512MB | Education</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        aside {
+            width: 280px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        .toc {
+            margin-top: 3rem;
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+        }
+
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 4rem 3rem;
+            max-width: 1000px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-code);
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .config-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .code-block:hover {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), var(--glow);
+            border-color: var(--primary);
+        }
+
+        .code-header {
+            background-color: #111;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: #00ff88;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .troubleshooting-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid #ffaa00;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .troubleshooting-card h4 {
+            color: #ffaa00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <a href="../index.html" class="back-link">&larr; Back to LegacyLink</a>
+            
+            <ul class="toc">
+                <li><a href="#rationale">1. Why This Stack</a></li>
+                <li><a href="#prerequisites">2. Prerequisites</a></li>
+                <li><a href="#step1">3. Download & Flash</a></li>
+                <li><a href="#step2">4. Installation</a></li>
+                <li><a href="#step3">5. Optimization Layer</a></li>
+                <li><a href="#step4">6. Application Stack</a></li>
+                <li><a href="#step5">7. Verification</a></li>
+                <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="config-badge">32-bit CPU | 512MB RAM | Education</div>
+        <h1>Puppy Linux (Fossapup32)</h1>
+        <p class="hero-desc">An exceptionally responsive, portable educational workstation that operates entirely in RAM via SFS layering, transforming 512MB systems into capable study machines.</p>
+
+        <section id="rationale">
+            <h2>Why This Stack</h2>
+            <ul>
+                <li><strong>SFS Layering:</strong> Puppy Linux copies its core file systems (SFS files) directly into RAM upon boot. This delivers SSD-like responsiveness, even on severely bottlenecked 512MB IDE/SATA setups.</li>
+                <li><strong>aufs Persistence:</strong> By creating a "pupsave" file, you gain persistent storage on a USB drive without requiring a full hard drive installation, reducing disk wear completely.</li>
+                <li><strong>Gnumeric:</strong> A specialized, ultra-lightweight spreadsheet processor that consumes a fraction of the RAM required by LibreOffice Calc, perfect for math and data assignments.</li>
+                <li><strong>ePDFView:</strong> An extremely lean PDF reader for accessing textbooks, worksheets, and lecture notes without crashing limited memory systems.</li>
+                <li><strong>Falkon-lite:</strong> Provides capable, basic web browsing for educational research, optimized for low memory overhead compared to modern Chrome or Firefox.</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>A 32-bit (x86) legacy PC with at least 512MB RAM.</li>
+                <li>A blank USB Flash Drive (2GB or larger recommended for pupsave space).</li>
+                <li>A secondary computer to download and flash the ISO.</li>
+                <li>Internet access via Ethernet or a supported Wi-Fi adapter.</li>
+            </ul>
+        </section>
+
+        <section id="step1">
+            <h2>Step 1: Download & Flash</h2>
+            <p>Download the 32-bit version of Puppy Linux (such as Fossapup32 or Bionicpup32) from the official repository.</p>
+            <p><a href="[https://puppylinux-collection.github.io/](https://puppylinux-collection.github.io/)" target="_blank">Download Puppy Linux 32-bit ISO &rarr;</a></p>
+            
+            <h3>Flashing via Linux Terminal</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dd if=fossapup32.iso of=/dev/sdX bs=4M status=progress</div>
+            </div>
+            <p><em>(Replace <code>/dev/sdX</code> with your actual USB drive identifier, e.g., <code>/dev/sdb</code>. Do not append partition numbers).</em></p>
+        </section>
+
+        <section id="step2">
+            <h2>Step 2: Installation Walkthrough</h2>
+            <ol>
+                <li>Insert the USB into the legacy PC and boot from it (press F2, F12, or DEL to access boot options).</li>
+                <li>Puppy will automatically load its core SFS files into your RAM. This process may take a minute or two on older USB 2.0 ports.</li>
+                <li>Once the desktop appears, you will be greeted by the Quick Setup window.</li>
+                <li>Configure your Country, Timezone, and Keyboard layout. Check the box to synchronize time with the internet if connected.</li>
+                <li>Click <strong>OK</strong> to restart the X server (graphical interface) and apply the changes.</li>
+                <li><em>Note: Puppy Linux is fully operational right now. A formal hard drive installation is not required!</em></li>
+            </ol>
+        </section>
+
+        <section id="step3">
+            <h2>Step 3: Post-Install Optimization</h2>
+            
+            <h3>1. Creating the pupsave (Persistence)</h3>
+            <p>To ensure your files, apps, and settings are saved, you must create a pupsave file. This happens during your very first shutdown or reboot.</p>
+            <ol>
+                <li>Click <strong>Menu</strong> -> <strong>Leave</strong> -> <strong>Reboot</strong>.</li>
+                <li>A prompt will appear asking if you want to save your session. Select <strong>Save</strong>.</li>
+                <li>Choose your USB drive as the save location.</li>
+                <li>Choose <code>ext4</code> as the file system for the save file.</li>
+                <li>Set the size (512MB to 1GB is usually sufficient for schoolwork). Puppy will generate the file and reboot.</li>
+            </ol>
+
+            <h3>2. Enable ZRAM</h3>
+            <p>On 512MB systems, enabling ZRAM provides essential compressed swap space inside the RAM, preventing system lockups during heavier web browsing.</p>
+            <ol>
+                <li>Navigate to <strong>Menu</strong> -> <strong>System</strong> -> <strong>Puppy Setup</strong>.</li>
+                <li>Select the <strong>Swap/ZRAM</strong> configuration tool.</li>
+                <li>Enable ZRAM and allocate 256MB. Apply the settings.</li>
+            </ol>
+        </section>
+
+        <section id="step4">
+            <h2>Step 4: Install the App Stack</h2>
+            <p>Puppy Linux uses the Puppy Package Manager (PPM), but you can also use terminal commands to quickly fetch the required educational tools.</p>
+            <p>Open the console (terminal) and run the following command:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">puppy-pkg install gnumeric epdfview falkon</div>
+            </div>
+            <p><em>Note: Depending on your specific Puppy version, the exact package names might vary slightly. You can always use the graphical PPM (Menu -> Setup -> Puppy Package Manager) to search for Gnumeric and ePDFView.</em></p>
+        </section>
+
+        <section id="step5">
+            <h2>Step 5: Verification</h2>
+            <p>Ensure your system is running lean and your applications are properly layered.</p>
+            
+            <h3>Check RAM Usage & ZRAM</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">free -h</div>
+            </div>
+            <p><em>You should see your ZRAM partition listed under Swap, and your primary memory usage should be extraordinarily low.</em></p>
+
+            <h3>Verify Installed Educational Apps</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">which gnumeric epdfview</div>
+            </div>
+            <p><em>This will return the paths to the installed binaries, confirming successful deployment.</em></p>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="troubleshooting-card">
+                <h4>Save File (pupsave) is filling up rapidly</h4>
+                <p>If you download large PDFs or media, save them *outside* the pupsave space directly to the root of the USB drive (usually accessible in <code>/mnt/home</code>). Keep the pupsave strictly for software configurations and lightweight documents.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>No Wi-Fi Connection</h4>
+                <p>Click the network icon in the bottom right tray and select <strong>Frisbee</strong> or <strong>Simple Network Setup (SNS)</strong>. These built-in tools are excellent at detecting older 32-bit Broadcom and Atheros Wi-Fi cards natively.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>Falkon-lite crashes on heavy modern sites</h4>
+                <p>Modern web browsing on 512MB RAM is inherently difficult due to JavaScript bloat. For pure research, consider disabling JavaScript in Falkon's settings, or using a text-based browser like <code>dillo</code> for text-heavy Wikipedia searches.</p>
+            </div>
+        </section>
+
+        <footer>
+            LegacyLink v2.0 | SDG 12.5 | Revive. Reuse. Reduce.<br>
+            <a href="../index.html">Return to Master Blueprint</a>
+        </footer>
+    </main>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeContent = btn.parentElement.nextElementSibling.textContent;
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.color = 'var(--primary)';
+                    btn.style.borderColor = 'var(--primary)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = 'var(--text-muted)';
+                        btn.style.borderColor = '#444';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

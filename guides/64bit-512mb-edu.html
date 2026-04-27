@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide: 64-bit | 512MB | Education</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        aside {
+            width: 280px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        .toc {
+            margin-top: 3rem;
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+            text-shadow: var(--glow);
+        }
+
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 4rem 3rem;
+            max-width: 1000px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            color: #ccc;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-code);
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .config-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .code-block:hover {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), var(--glow);
+            border-color: var(--primary);
+        }
+
+        .code-header {
+            background-color: #111;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: #00ff88;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .troubleshooting-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid #ffaa00;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .troubleshooting-card h4 {
+            color: #ffaa00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            text-shadow: var(--glow);
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <a href="../index.html" class="back-link">&larr; Back to LegacyLink</a>
+            
+            <ul class="toc">
+                <li><a href="#rationale">1. Why This Stack</a></li>
+                <li><a href="#prerequisites">2. Prerequisites</a></li>
+                <li><a href="#step1">3. Download & Flash</a></li>
+                <li><a href="#step2">4. Installation</a></li>
+                <li><a href="#step3">5. Optimization Layer</a></li>
+                <li><a href="#step4">6. Application Stack</a></li>
+                <li><a href="#step5">7. Verification</a></li>
+                <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="config-badge">64-bit CPU | 512MB RAM | Education</div>
+        <h1>Alpine Linux + Xfce</h1>
+        <p class="hero-desc">Achieve a fully graphical, intuitive educational workstation on just 512MB of RAM. Alpine's minimal base pairs with a stripped-down Xfce desktop to deliver maximum efficiency without sacrificing usability.</p>
+
+        <section id="rationale">
+            <h2>Why This Stack</h2>
+            <ul>
+                <li><strong>Xfce-minimal on Alpine:</strong> By avoiding standard display managers and bloatware, a barebones Xfce setup on Alpine runs at roughly ~120MB RAM idle, leaving a highly viable ~380MB for schoolwork.</li>
+                <li><strong>noop Scheduler:</strong> Essential if your budget or legacy hardware uses an early-generation SSD or an SD card, reducing CPU overhead during read/write cycles.</li>
+                <li><strong>Lightweight Education Apps:</strong> Instead of heavy monolithic suites, we deploy <code>Gnumeric</code> for spreadsheet/data work and <code>ePDFView</code> for reading textbooks, meeting core educational needs with minimal dependencies.</li>
+                <li><strong>ZRAM + ext4:</strong> Ext4 provides rock-solid data integrity for student files, while a compressed ZRAM swap partition acts as a crucial safety net for when memory limits are pushed.</li>
+                <li><strong>Fast Package Management:</strong> Alpine's <code>apk</code> is exponentially faster and lighter than <code>apt</code> or <code>dnf</code>, making software updates smooth even on strained processors.</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>A 64-bit (x86_64) legacy PC with 512MB of RAM.</li>
+                <li>A blank USB Flash Drive (1GB or larger).</li>
+                <li>A secondary computer for flashing the ISO image.</li>
+                <li>A wired Ethernet connection (recommended for the initial <code>setup-alpine</code> process).</li>
+            </ul>
+        </section>
+
+        <section id="step1">
+            <h2>Step 1: Download & Flash</h2>
+            <p>Download the <strong>Alpine Linux Standard (x86_64)</strong> ISO. This will give us the base CLI system needed to build our minimal graphical environment.</p>
+            <p><a href="[https://alpinelinux.org/downloads/](https://alpinelinux.org/downloads/)" target="_blank">Download Alpine Standard (x86_64) ISO &rarr;</a></p>
+            
+            <h3>Flashing via Linux Terminal</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dd if=alpine-standard-3.x.x-x86_64.iso of=/dev/sdX bs=4M status=progress</div>
+            </div>
+            <p><em>(Replace <code>/dev/sdX</code> with your actual USB drive identifier. Do not append partition numbers).</em></p>
+        </section>
+
+        <section id="step2">
+            <h2>Step 2: Installation Walkthrough</h2>
+            <ol>
+                <li>Boot the target machine from the USB drive.</li>
+                <li>At the <code>localhost login:</code> prompt, log in as <code>root</code>.</li>
+                <li>Run the system installer by typing: <code>setup-alpine</code>.</li>
+                <li>Configure your keyboard layout, server hostname, and network interface (DHCP).</li>
+                <li>Select your timezone, set a root password, and pick the fastest package mirror (type <code>1</code>).</li>
+                <li>Select your hard drive (e.g., <code>sda</code>) and type <code>sys</code> to execute a permanent ext4 installation.</li>
+                <li>Once complete, type <code>reboot</code> and remove the installation media.</li>
+            </ol>
+        </section>
+
+        <section id="step3">
+            <h2>Step 3: Post-Install Optimization</h2>
+            <p>Log in to your fresh installation as root to apply the memory and disk optimizations.</p>
+
+            <h3>1. Configure the noop Scheduler</h3>
+            <p>Modify the extlinux bootloader config to apply the noop I/O scheduler.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sed -i 's/default_kernel_opts="/default_kernel_opts="elevator=noop /' /etc/update-extlinux.conf
+update-extlinux</div>
+            </div>
+
+            <h3>2. Set Up ZRAM Memory Compression</h3>
+            <p>Enable a 256MB ZRAM partition using LZ4 compression to act as high-speed swap.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">modprobe zram
+echo lz4 > /sys/block/zram0/comp_algorithm
+echo 256M > /sys/block/zram0/disksize
+mkswap /dev/zram0
+swapon /dev/zram0 -p 10</div>
+            </div>
+            <p>Make ZRAM persistent across reboots by adding it to your local startup script:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">echo "modprobe zram" >> /etc/local.d/zram.start
+echo "echo lz4 > /sys/block/zram0/comp_algorithm" >> /etc/local.d/zram.start
+echo "echo 256M > /sys/block/zram0/disksize" >> /etc/local.d/zram.start
+echo "mkswap /dev/zram0" >> /etc/local.d/zram.start
+echo "swapon /dev/zram0 -p 10" >> /etc/local.d/zram.start
+chmod +x /etc/local.d/zram.start
+rc-update add local default</div>
+            </div>
+        </section>
+
+        <section id="step4">
+            <h2>Step 4: Install the App Stack</h2>
+            <p>We will manually build the graphical environment to avoid installing unnecessary background services.</p>
+
+            <h3>1. Install Xorg and Xfce Core</h3>
+            <p>Ensure the community repositories are uncommented in <code>/etc/apk/repositories</code>, then install the display server and desktop.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">apk update
+apk add xorg-server xinit xf86-video-modesetting xf86-input-libinput
+apk add xfce4 xfce4-terminal</div>
+            </div>
+            <p><em>(Optional: Install <code>dbus</code> and add it to startup if you need advanced hardware polling: <code>apk add dbus; rc-update add dbus</code>).</em></p>
+
+            <h3>2. Install Educational Applications</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">apk add epdfview gnumeric</div>
+            </div>
+
+            <h3>3. Setup User & Graphical Start</h3>
+            <p>Create a non-root student user, add them to essential groups, and configure their X11 startup file.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">adduser student
+adduser student video
+adduser student input
+su - student
+echo "exec startxfce4" > ~/.xinitrc</div>
+            </div>
+            <p>Now, simply type <code>startx</code> to launch the Xfce desktop environment.</p>
+        </section>
+
+        <section id="step5">
+            <h2>Step 5: Verification</h2>
+            <p>Check that your base system is ready and operating within constraints.</p>
+            
+            <h3>Verify Memory & ZRAM</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">free -h</div>
+            </div>
+            <p><em>Check this from within the Xfce terminal. You should see an idle memory usage hovering around 120-150MB, with your 256MB ZRAM swap ready.</em></p>
+
+            <h3>Verify Xfce Version</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">xfce4-session --version</div>
+            </div>
+            <p><em>Confirms the core desktop session manager is properly installed.</em></p>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="troubleshooting-card">
+                <h4>startx fails or drops back to terminal</h4>
+                <p>If Xorg fails to start, it's almost always a missing video driver. While <code>xf86-video-modesetting</code> works for most hardware, older Intel or AMD chips might need specific drivers. Try running <code>apk add xf86-video-intel</code> or <code>apk add xf86-video-ati</code> as root, then retry <code>startx</code>.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>No mouse or keyboard input in Xfce</h4>
+                <p>Ensure that your <code>student</code> user is definitely added to the <code>input</code> group (run <code>groups</code> to check). You must also ensure <code>xf86-input-libinput</code> and <code>udev</code> are installed and running (<code>apk add eudev; rc-update add udev; rc-service udev start</code>).</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>Audio is not working</h4>
+                <p>Because we built a minimal system, sound servers are not installed by default. If the student requires audio for videos or lectures, install PulseAudio or Pipewire: <code>apk add pulseaudio pulseaudio-alsa; rc-update add alsa default</code>.</p>
+            </div>
+        </section>
+
+        <footer>
+            LegacyLink v2.0 | SDG 12.5 | Revive. Reuse. Reduce.<br>
+            <a href="../index.html">Return to Master Blueprint</a>
+        </footer>
+    </main>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeContent = btn.parentElement.nextElementSibling.textContent;
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.color = 'var(--primary)';
+                    btn.style.borderColor = 'var(--primary)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = 'var(--text-muted)';
+                        btn.style.borderColor = '#444';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

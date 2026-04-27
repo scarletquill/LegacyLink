@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide: 64-bit | 512MB | Daily Driver</title>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap](https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap)');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --primary: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font-ui: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --glow: 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Carbon Fiber Texture */
+        .carbon-fiber {
+            background:
+                linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+            background-color: #131313;
+            background-size: 20px 20px;
+        }
+
+        aside {
+            width: 280px;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            padding: 2rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: var(--bg-color);
+            box-shadow: var(--glow);
+        }
+
+        .toc {
+            margin-top: 3rem;
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+            text-shadow: var(--glow);
+        }
+
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 4rem 3rem;
+            max-width: 1000px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: var(--glow);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            color: #ccc;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-code);
+        }
+
+        p, ul, ol {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .config-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .code-block:hover {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), var(--glow);
+            border-color: var(--primary);
+        }
+
+        .code-header {
+            background-color: #111;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: #00ff88;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .troubleshooting-card {
+            background-color: var(--card-bg);
+            border-left: 4px solid #ffaa00;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .troubleshooting-card h4 {
+            color: #ffaa00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            text-shadow: var(--glow);
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+            main {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="carbon-fiber">
+        <div class="sidebar-content">
+            <a href="../index.html" class="back-link">&larr; Back to LegacyLink</a>
+            
+            <ul class="toc">
+                <li><a href="#rationale">1. Why This Stack</a></li>
+                <li><a href="#prerequisites">2. Prerequisites</a></li>
+                <li><a href="#step1">3. Download & Flash</a></li>
+                <li><a href="#step2">4. Installation</a></li>
+                <li><a href="#step3">5. Optimization Layer</a></li>
+                <li><a href="#step4">6. Application Stack</a></li>
+                <li><a href="#step5">7. Verification</a></li>
+                <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="config-badge">64-bit CPU | 512MB RAM | Daily Driver</div>
+        <h1>Alpine Linux + Sway</h1>
+        <p class="hero-desc">Achieve a hyper-efficient, modern daily driver on constrained hardware by combining Alpine's musl libc core with Sway, a next-generation Wayland compositor.</p>
+
+        <section id="rationale">
+            <h2>Why This Stack</h2>
+            <ul>
+                <li><strong>Alpine Core & musl libc:</strong> Alpine's base system is aggressively stripped down. Using <code>musl libc</code> instead of <code>glibc</code> means the foundational OS consumes under 50MB of RAM upon boot.</li>
+                <li><strong>Sway (Wayland Compositor):</strong> Wayland eliminates the overhead of the legacy X11 display server. Sway offers a tiling, keyboard-driven workflow that is incredibly light on memory and CPU.</li>
+                <li><strong>F2FS (Flash-Friendly File System):</strong> If you are booting from an older USB drive or a cheap SSD, F2FS significantly reduces write amplification and improves performance over ext4.</li>
+                <li><strong>Foot Terminal:</strong> A minimalist, fast, and lightweight Wayland-native terminal emulator perfect for restricted memory boundaries.</li>
+                <li><strong>Mako:</strong> A lightweight Wayland notification daemon that operates without the massive dependencies of traditional desktop notification systems.</li>
+            </ul>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>A 64-bit (x86_64) legacy PC with 512MB of RAM.</li>
+                <li>A blank USB Flash Drive (1GB or larger).</li>
+                <li>A secondary computer for flashing the ISO image.</li>
+                <li>A wired Ethernet connection (highly recommended for the initial <code>setup-alpine</code> process).</li>
+            </ul>
+        </section>
+
+        <section id="step1">
+            <h2>Step 1: Download & Flash</h2>
+            <p>Download the <strong>Alpine Linux Standard (x86_64)</strong> ISO from the official site. This provides a minimal bootable environment to start our custom build.</p>
+            <p><a href="[https://alpinelinux.org/downloads/](https://alpinelinux.org/downloads/)" target="_blank">Download Alpine Standard (x86_64) ISO &rarr;</a></p>
+            
+            <h3>Flashing via Linux Terminal</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sudo dd if=alpine-standard-3.x.x-x86_64.iso of=/dev/sdX bs=4M status=progress</div>
+            </div>
+            <p><em>(Replace <code>/dev/sdX</code> with your actual USB drive identifier. Do not append partition numbers).</em></p>
+        </section>
+
+        <section id="step2">
+            <h2>Step 2: Installation Walkthrough</h2>
+            <ol>
+                <li>Boot your legacy hardware from the USB drive.</li>
+                <li>At the `localhost login:` prompt, type <code>root</code>.</li>
+                <li>Type <code>setup-alpine</code> to launch the interactive setup script.</li>
+                <li>Configure your keyboard layout, hostname, and networking (DHCP is usually fine).</li>
+                <li>When prompted for a mirror, select <code>1</code> for the fastest available.</li>
+                <li>Choose your target disk (e.g., <code>sda</code>) and select <code>sys</code> for a permanent hard drive installation.</li>
+                <li>Once the installation script finishes, type <code>reboot</code> and remove the USB drive.</li>
+            </ol>
+        </section>
+
+        <section id="step3">
+            <h2>Step 3: Post-Install Optimization</h2>
+            <p>Log back in as root to apply filesystem and memory optimizations tailored for 512MB RAM.</p>
+
+            <h3>1. Format Storage with F2FS (Optional)</h3>
+            <p>If you have an additional Flash-based drive (like a secondary SSD or USB) for data storage, install F2FS tools and format it.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">apk add f2fs-tools
+mkfs.f2fs /dev/sdb1</div>
+            </div>
+
+            <h3>2. Configure ZRAM with LZ4</h3>
+            <p>On a 512MB system, ZRAM is essential. We will use the highly efficient LZ4 algorithm.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">modprobe zram
+echo lz4 > /sys/block/zram0/comp_algorithm
+echo 256M > /sys/block/zram0/disksize
+mkswap /dev/zram0
+swapon /dev/zram0 -p 10</div>
+            </div>
+            <p>To persist ZRAM across reboots on Alpine, add it to your local startup script:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">echo "modprobe zram" >> /etc/local.d/zram.start
+echo "echo lz4 > /sys/block/zram0/comp_algorithm" >> /etc/local.d/zram.start
+echo "echo 256M > /sys/block/zram0/disksize" >> /etc/local.d/zram.start
+echo "mkswap /dev/zram0" >> /etc/local.d/zram.start
+echo "swapon /dev/zram0 -p 10" >> /etc/local.d/zram.start
+chmod +x /etc/local.d/zram.start
+rc-update add local default</div>
+            </div>
+        </section>
+
+        <section id="step4">
+            <h2>Step 4: Install the App Stack</h2>
+            <p>Next, we install our Wayland window manager and core applications.</p>
+            
+            <h3>1. Install Core Packages</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">apk update
+apk add eudev
+setup-devd udev
+apk add sway foot links2 mako</div>
+            </div>
+
+            <h3>2. Sway Config Basics</h3>
+            <p>We must set up Sway for a non-root user. First, create a standard user (e.g., <code>student</code>) and add them to the <code>video</code> and <code>input</code> groups.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">adduser student
+adduser student video
+adduser student input</div>
+            </div>
+            <p>Log in as your new user, and copy the default Sway configuration to your home directory:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">mkdir -p ~/.config/sway
+cp /etc/sway/config ~/.config/sway/config
+nano ~/.config/sway/config</div>
+            </div>
+            <p><em>Inside the config file, change the default terminal from `alacritty` (if set) to `foot`.</em></p>
+        </section>
+
+        <section id="step5">
+            <h2>Step 5: Verification</h2>
+            <p>Check that your base system is ready and properly compressed.</p>
+            
+            <h3>Verify Sway Version</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">sway --version</div>
+            </div>
+            <p><em>Ensure it outputs the installed Sway compositor version.</em></p>
+
+            <h3>Verify Memory & ZRAM</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">free -h</div>
+            </div>
+            <p><em>You should see your very low baseline RAM usage, and 256MB allocated to Swap (ZRAM).</em></p>
+
+            <h3>Verify Filesystems</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>bash</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+                <div class="code-content">df -T</div>
+            </div>
+            <p><em>If you mounted an F2FS partition, it will display <code>f2fs</code> under the Type column.</em></p>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="troubleshooting-card">
+                <h4>Sway fails to launch or errors out</h4>
+                <p>Wayland requires proper user permissions. Ensure your user is added to the <code>video</code>, <code>input</code>, and <code>seat</code> groups. You may also need to install and start <code>seatd</code> (<code>apk add seatd; rc-update add seatd; rc-service seatd start</code>) depending on your Alpine version.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>Cannot format to F2FS</h4>
+                <p>If <code>mkfs.f2fs</code> returns a "command not found" error, ensure you have enabled the community repositories in <code>/etc/apk/repositories</code>, and run <code>apk update && apk add f2fs-tools</code>.</p>
+            </div>
+
+            <div class="troubleshooting-card">
+                <h4>Links2 browser lacks graphical interface</h4>
+                <p>By default, Links2 runs as a text browser in the terminal. To launch it in graphical mode within Sway, run it using the command <code>links2 -g</code>. Note that it will still look very rudimentary, but it keeps RAM usage incredibly low.</p>
+            </div>
+        </section>
+
+        <footer>
+            LegacyLink v2.0 | SDG 12.5 | Revive. Reuse. Reduce.<br>
+            <a href="../index.html">Return to Master Blueprint</a>
+        </footer>
+    </main>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeContent = btn.parentElement.nextElementSibling.textContent;
+                navigator.clipboard.writeText(codeContent).then(() => {
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.style.color = 'var(--primary)';
+                    btn.style.borderColor = 'var(--primary)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = 'var(--text-muted)';
+                        btn.style.borderColor = '#444';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
